@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.17",
+    "konva": "^9.3.20",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-konva": "^19.0.3",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
