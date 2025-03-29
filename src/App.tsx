@@ -1,11 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
+import { useStore } from './store';
 
 function App() {
   const [count, setCount] = useState(0);
 
+ useEffect(() => {
+   // Set test values in the Zustand store
+   useStore.setState({
+     pattern: 'test pattern',
+     stitches: ['stitch1', 'stitch2'],
+     displayMode: 'test mode',
+     placeholder: 'test placeholder',
+   });
+ }, []);
+
+   const pattern = useStore((state) => state.pattern);
+   const stitches = useStore((state) => state.stitches);
+   const displayMode = useStore((state) => state.displayMode);
+   const placeholder = useStore((state) => state.placeholder);
   return (
     <>
       <div>
@@ -25,6 +40,13 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
+      <div>
+        <h2>Zustand Store Values:</h2>
+        <p>Pattern: {pattern}</p>
+        <p>Stitches: {stitches.join(', ')}</p>
+        <p>Display Mode: {displayMode}</p>
+        <p>Placeholder: {placeholder}</p>
+      </div>{' '}
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
