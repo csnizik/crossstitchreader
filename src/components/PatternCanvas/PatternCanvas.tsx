@@ -54,9 +54,7 @@ const PatternCanvas = ({ pattern }: Props) => {
           ))
         )}
       </Layer>
-      // Add additional Layer elements and adjust order for: stitch state overlays (highlight completed cells, etc.),
-      // Backstitch lines (using Line), French Knots (using Circle or Shape), Selection/Highlight state, Grid markers,
-      // rulers, tool cursors, etc.
+
     </Stage>
   );
 };
