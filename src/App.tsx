@@ -1,6 +1,7 @@
 import PatternCanvas from './components/PatternCanvas/PatternCanvas';
 import rawPattern from './mockData/sample-pattern.json';
 import { Pattern } from './types/pattern';
+import SymbolKey from './components/SymbolKey/SymbolKey';
 
 const samplePattern: Pattern = {
   ...rawPattern,
@@ -12,7 +13,8 @@ const samplePattern: Pattern = {
 
 function App() {
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ display: 'flex', width: '100vw', height: '100vh' }}>
+      <SymbolKey />
       <PatternCanvas pattern={samplePattern} />
     </div>
   );
