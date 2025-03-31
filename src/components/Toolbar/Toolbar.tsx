@@ -11,10 +11,10 @@ import { useState, useRef } from 'react';
 import { useTimerStore } from '../../states/timerStore';
 import { useSettingsStore } from '../../states/settingsStore';
 
-const running = useTimerStore((s) => s.running);
-const toggleTimer = useTimerStore((s) => s.toggle);
 
 const Toolbar = () => {
+  const running = useTimerStore((s) => s.running);
+  const toggleTimer = useTimerStore((s) => s.toggle);
 
   const [pos, setPos] = useState({ x: 16, y: 16 });
   const dragging = useRef(false);

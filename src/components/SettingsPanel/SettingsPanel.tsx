@@ -23,7 +23,7 @@ const [tempGridSetting, setTempGridSetting] = useState(false);
 const [hydrated, setHydrated] = useState(false);
 
 
-const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // Animate open/close
  useEffect(() => {
@@ -186,10 +186,10 @@ const isDirty =
             onClick={handleApply}
             disabled={!isDirty}
             className={clsx(
-              'rounded px-4 py-2 text-sm text-white transition-colors',
+              'rounded px-4 py-2 text-sm text-white',
               isDirty
                 ? 'bg-blue-600 hover:bg-blue-700'
-                : 'bg-gray-400 cursor-not-allowed opacity-60'
+                : 'bg-gray-400 cursor-not-allowed'
             )}
           >
             Apply
