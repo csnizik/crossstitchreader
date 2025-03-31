@@ -1,6 +1,6 @@
 # React + TypeScript + Vite
 
-[![codecov](https://codecov.io/gh/yourusername/yourrepo/branch/main/graph/badge.svg)](https://codecov.io/gh/yourusername/yourrepo)
+[![codecov](https://codecov.io/gh/csnizik/crossstitchreader/branch/main/graph/badge.svg)](https://codecov.io/gh/csnizik/crossstitchreader)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
