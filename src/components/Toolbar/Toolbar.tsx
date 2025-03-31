@@ -56,7 +56,7 @@ const Toolbar = () => {
         top: pos.y,
       }}
       onMouseDown={handleMouseDown}
-      className="absolute z-10 flex flex-col gap-2 rounded-lg bg-white/90 p-3 shadow-lg cursor-move"
+      className="absolute z-10 flex flex-col gap-2 rounded-lg bg-white/90 p-3 shadow-lg cursor-move select-none touch-none"
     >
       <button
         className="flex items-center gap-2 text-sm hover:text-blue-600"
