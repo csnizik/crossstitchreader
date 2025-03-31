@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "lint": "eslint 'src/**/*.{js,ts,jsx,tsx}'",
     "format": "prettier --write 'src/**/*.{js,ts,jsx,tsx,css,md}'",
-    "type-check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
