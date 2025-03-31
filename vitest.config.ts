@@ -8,7 +8,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './vitest.setup.ts',
-    include: ['src/**/*.test.{ts,tsx}'], // 🔒 Lock it down to just your source tests
+    include: ['src/**/*.test.{ts,tsx}'],
     exclude: [
       'node_modules',
       'tests/e2e/**',
@@ -22,6 +22,7 @@ export default defineConfig({
       'eslint.config.js',
       'vite-env.d.ts',
     ],
+    mockReset: true, // ✅ enable resetting mocks between tests
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],

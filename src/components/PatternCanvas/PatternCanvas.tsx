@@ -21,41 +21,42 @@ const PatternCanvas = ({ pattern }: Props) => {
   const [cols, rows] = pattern.meta.gridSize;
 
   return (
-    <Stage
-      width={window.innerWidth}
-      height={window.innerHeight}
-      scaleX={scale}
-      scaleY={scale}
-      x={position.x}
-      y={position.y}
-      onWheel={handleWheel}
-      draggable
-      onDragEnd={(e) => {
-        setPosition({
-          x: e.target.x(),
-          y: e.target.y(),
-        });
-      }}
-    >
-      <Layer>
-        <GridLines cols={cols} rows={rows} cellSize={CELL_SIZE} />
-      </Layer>
-      <Layer>
-        {pattern.grid.map((row, y) =>
-          row.map((symbol, x) => (
-            <SymbolCell
-              key={`${x}-${y}`}
-              x={x}
-              y={y}
-              symbol={symbol}
-              color={pattern.symbols[symbol]?.color || '#000'}
-              cellSize={CELL_SIZE}
-            />
-          ))
-        )}
-      </Layer>
-
-    </Stage>
+    <div data-test-id="pattern-canvas">
+      <Stage
+        width={window.innerWidth}
+        height={window.innerHeight}
+        scaleX={scale}
+        scaleY={scale}
+        x={position.x}
+        y={position.y}
+        onWheel={handleWheel}
+        draggable
+        onDragEnd={(e) => {
+          setPosition({
+            x: e.target.x(),
+            y: e.target.y(),
+          });
+        }}
+      >
+        <Layer>
+          <GridLines cols={cols} rows={rows} cellSize={CELL_SIZE} />
+        </Layer>
+        <Layer>
+          {pattern.grid.map((row, y) =>
+            row.map((symbol, x) => (
+              <SymbolCell
+                key={`${x}-${y}`}
+                x={x}
+                y={y}
+                symbol={symbol}
+                color={pattern.symbols[symbol]?.color || '#000'}
+                cellSize={CELL_SIZE}
+              />
+            ))
+          )}
+        </Layer>
+      </Stage>
+    </div>
   );
 };
 

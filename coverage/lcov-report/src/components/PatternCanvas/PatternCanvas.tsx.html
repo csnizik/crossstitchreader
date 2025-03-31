@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.58% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>43/48</span>
+                <span class='fraction'>45/50</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.58% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>43/48</span>
+                <span class='fraction'>45/50</span>
             </div>
         
             
@@ -125,7 +125,8 @@
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -158,6 +159,7 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -181,7 +183,7 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
@@ -210,41 +212,42 @@ const PatternCanvas = ({ pattern }: Props) =&gt; {
   const [cols, rows] = pattern.meta.gridSize;
 &nbsp;
   return (
-    &lt;Stage
-      width={window.innerWidth}
-      height={window.innerHeight}
-      scaleX={scale}
-      scaleY={scale}
-      x={position.x}
-      y={position.y}
-      onWheel={handleWheel}
-      draggable
-      onDragEnd={<span class="fstat-no" title="function not covered" >(e) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        setPosition({</span>
-<span class="cstat-no" title="statement not covered" >          x: e.target.x(),</span>
-<span class="cstat-no" title="statement not covered" >          y: e.target.y(),</span>
-<span class="cstat-no" title="statement not covered" >        });</span>
-<span class="cstat-no" title="statement not covered" >      }}</span>
-    &gt;
-      &lt;Layer&gt;
-        &lt;GridLines cols={cols} rows={rows} cellSize={CELL_SIZE} /&gt;
-      &lt;/Layer&gt;
-      &lt;Layer&gt;
-        {pattern.grid.map((row, y) =&gt;
-          row.map((symbol, x) =&gt; (
-            &lt;SymbolCell
-              key={`${x}-${y}`}
-              x={x}
-              y={y}
-              symbol={symbol}
-              color={pattern.symbols[symbol]?.<span class="branch-0 cbranch-no" title="branch not covered" >color || '#000'}</span>
-              cellSize={CELL_SIZE}
-            /&gt;
-          ))
-        )}
-      &lt;/Layer&gt;
-&nbsp;
-    &lt;/Stage&gt;
+    &lt;div data-test-id="pattern-canvas"&gt;
+      &lt;Stage
+        width={window.innerWidth}
+        height={window.innerHeight}
+        scaleX={scale}
+        scaleY={scale}
+        x={position.x}
+        y={position.y}
+        onWheel={handleWheel}
+        draggable
+        onDragEnd={<span class="fstat-no" title="function not covered" >(e) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >          setPosition({</span>
+<span class="cstat-no" title="statement not covered" >            x: e.target.x(),</span>
+<span class="cstat-no" title="statement not covered" >            y: e.target.y(),</span>
+<span class="cstat-no" title="statement not covered" >          });</span>
+<span class="cstat-no" title="statement not covered" >        }}</span>
+      &gt;
+        &lt;Layer&gt;
+          &lt;GridLines cols={cols} rows={rows} cellSize={CELL_SIZE} /&gt;
+        &lt;/Layer&gt;
+        &lt;Layer&gt;
+          {pattern.grid.map((row, y) =&gt;
+            row.map((symbol, x) =&gt; (
+              &lt;SymbolCell
+                key={`${x}-${y}`}
+                x={x}
+                y={y}
+                symbol={symbol}
+                color={pattern.symbols[symbol]?.<span class="branch-0 cbranch-no" title="branch not covered" >color || '#000'}</span>
+                cellSize={CELL_SIZE}
+              /&gt;
+            ))
+          )}
+        &lt;/Layer&gt;
+      &lt;/Stage&gt;
+    &lt;/div&gt;
   );
 };
 &nbsp;
@@ -256,7 +259,7 @@ export default PatternCanvas;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-31T16:47:40.411Z
+                at 2025-03-31T17:31:30.451Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

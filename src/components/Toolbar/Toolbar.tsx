@@ -11,7 +11,6 @@ import { useState, useRef } from 'react';
 import { useTimerStore } from '../../states/timerStore';
 import { useSettingsStore } from '../../states/settingsStore';
 
-
 const Toolbar = () => {
   const running = useTimerStore((s) => s.running);
   const toggleTimer = useTimerStore((s) => s.toggle);
@@ -52,6 +51,7 @@ const Toolbar = () => {
 
   return (
     <div
+      data-testid="toolbar"
       style={{
         left: pos.x,
         top: pos.y,
