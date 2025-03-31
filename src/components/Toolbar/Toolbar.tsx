@@ -7,7 +7,7 @@ import {
   PauseCircleIcon,
 } from '@heroicons/react/24/solid';
 import { useState, useRef } from 'react';
-import { useTimerStore } from '../states/timerStore';
+import { useTimerStore } from '../../states/timerStore';
 
 const Toolbar = () => {
   const running = useTimerStore((s) => s.running);
