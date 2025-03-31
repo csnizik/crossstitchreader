@@ -22,7 +22,7 @@ export default defineConfig({
       'eslint.config.js',
       'vite-env.d.ts',
     ],
-    mockReset: true, // ✅ enable resetting mocks between tests
+    mockReset: true,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
