@@ -20,19 +20,18 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint || true
-        # Or true to temp set as non-blocking on test fail
 
       - name: Run Prettier check
         run: npm run format || true
-        # Or true to temp set as non-blocking on test fail
 
       - name: Type check
         run: npm run typecheck || true
-        # Or true to temp set as non-blocking on test fail
 
   vitest:
     name: Unit & Integration Tests
     runs-on: ubuntu-latest
+    outputs:
+      coverage_dir: ${{ steps.set_output.outputs.coverage_dir }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -44,6 +43,26 @@ jobs:
 
       - name: Run Vitest with coverage
         run: npm run test:unit
+
+      - name: Set coverage output path
+        id: set_output
+        run: echo "coverage_dir=coverage/lcov.info" >> $GITHUB_OUTPUT
+
+  codecov:
+    name: Upload Coverage to Codecov
+    needs: vitest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-coverage
+          fail_ci_if_error: false
 
   playwright:
     name: E2E Tests
