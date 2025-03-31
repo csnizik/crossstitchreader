@@ -8,6 +8,9 @@ type SettingsStore = {
 
   mockFabricCount: string;
   setMockFabricCount: (value: string) => void;
+
+  thickerGrid: boolean;
+  setThickerGrid: (value: boolean) => void;
 };
 
 export const useSettingsStore = create<SettingsStore>((set) => ({
@@ -18,5 +21,9 @@ export const useSettingsStore = create<SettingsStore>((set) => ({
 
   mockFabricCount: '14',
   setMockFabricCount: (value) => set({ mockFabricCount: value }),
+
+  thickerGrid: false,
+  setThickerGrid: (value) => set({ thickerGrid: value }),
 }));
+
 
