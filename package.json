@@ -9,6 +9,9 @@
     "preview": "vite preview",
     "lint": "eslint 'src/**/*.{js,ts,jsx,tsx}'",
     "format": "prettier --write 'src/**/*.{js,ts,jsx,tsx,css,md}'",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:unit": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug"
