@@ -11,6 +11,7 @@
     "format": "prettier --write 'src/**/*.{js,ts,jsx,tsx,css,md}'"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.0.17",
     "konva": "^9.3.20",
     "react": "^19.0.0",
