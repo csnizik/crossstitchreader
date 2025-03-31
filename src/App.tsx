@@ -15,13 +15,18 @@ const samplePattern: Pattern = {
 
 function App() {
   return (
-    <div style={{ display: 'flex', width: '100vw', height: '100vh' }}>
+    <div className="relative h-screen w-screen overflow-hidden bg-white">
       <Toolbar />
+
+      <div className="absolute inset-0 z-0">
+        <PatternCanvas pattern={samplePattern} />
+      </div>
+
+      <SymbolKey /> 
       <SettingsPanel />
-      <SymbolKey />
-      <PatternCanvas pattern={samplePattern} />
     </div>
   );
 }
+
 
 export default App;

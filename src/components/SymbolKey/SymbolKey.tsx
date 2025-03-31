@@ -14,7 +14,7 @@ const mockSymbols: MockSymbol[] = [
 
 const SymbolKey = () => {
   return (
-    <div style={{ padding: '1rem', width: '300px', background: '#f3f3f3' }}>
+    <div className="select-none touch-none" style={{ padding: '1rem', width: '300px', background: '#f3f3f3' }}>
       <h2 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Symbol Key</h2>
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {mockSymbols.map((s) => (
