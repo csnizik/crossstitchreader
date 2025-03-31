@@ -2,12 +2,14 @@ import {
   ArrowUturnLeftIcon,
   ArrowUturnRightIcon,
   ArrowDownTrayIcon,
+  Cog6ToothIcon,
   FolderOpenIcon,
   PlayCircleIcon,
   PauseCircleIcon,
 } from '@heroicons/react/24/solid';
 import { useState, useRef } from 'react';
 import { useTimerStore } from '../../states/timerStore';
+import { useSettingsStore } from '../../states/settingsStore';
 
 const Toolbar = () => {
   const running = useTimerStore((s) => s.running);
@@ -94,6 +96,13 @@ const Toolbar = () => {
           <PlayCircleIcon className="size-5" />
         )}
         {running ? 'Stop Timer' : 'Start Timer'}
+      </button>
+      <button
+        className="flex items-center gap-2 text-sm hover:text-blue-600"
+        onClick={() => useSettingsStore.getState().open()}
+      >
+        <Cog6ToothIcon className="size-5" />
+        Settings
       </button>
     </div>
   );
