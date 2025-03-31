@@ -51,6 +51,7 @@ const Toolbar = () => {
 
   return (
     <div
+      data-testid="toolbar"
       style={{
         left: pos.x,
         top: pos.y,

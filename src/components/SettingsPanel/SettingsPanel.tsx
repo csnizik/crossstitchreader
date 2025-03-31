@@ -18,29 +18,27 @@ const SettingsPanel = () => {
   const [rendered, setRendered] = useState(false);
 
   // Local temp values
-const [tempFabricCount, setTempFabricCount] = useState('');
-const [tempGridSetting, setTempGridSetting] = useState(false);
-const [hydrated, setHydrated] = useState(false);
+  const [tempFabricCount, setTempFabricCount] = useState('');
+  const [tempGridSetting, setTempGridSetting] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
-
-const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // Animate open/close
- useEffect(() => {
-   if (isOpen) {
-     setRendered(true);
-     requestAnimationFrame(() => setAnimating(true));
-     setTempFabricCount(mockFabricCount);
-     setTempGridSetting(thickerGrid);
-     setHydrated(true);
-   } else {
-     setAnimating(false);
-     setHydrated(false);
-     const timeout = setTimeout(() => setRendered(false), 150);
-     return () => clearTimeout(timeout);
-   }
- }, [isOpen, mockFabricCount, thickerGrid]);
-
+  useEffect(() => {
+    if (isOpen) {
+      setRendered(true);
+      requestAnimationFrame(() => setAnimating(true));
+      setTempFabricCount(mockFabricCount);
+      setTempGridSetting(thickerGrid);
+      setHydrated(true);
+    } else {
+      setAnimating(false);
+      setHydrated(false);
+      const timeout = setTimeout(() => setRendered(false), 150);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen, mockFabricCount, thickerGrid]);
 
   // Escape to close
   useEffect(() => {
@@ -71,10 +69,9 @@ const modalRef = useRef<HTMLDivElement>(null);
     'Advanced',
   ];
 
-const isDirty =
-  hydrated &&
-  (tempFabricCount !== mockFabricCount || tempGridSetting !== thickerGrid);
-
+  const isDirty =
+    hydrated &&
+    (tempFabricCount !== mockFabricCount || tempGridSetting !== thickerGrid);
 
   const handleCancel = () => {
     if (isDirty) {
@@ -92,6 +89,7 @@ const isDirty =
 
   return createPortal(
     <div
+      data-testid="settings-panel"
       className={clsx(
         'fixed inset-0 z-50 flex items-center justify-center bg-black/50 transition-opacity duration-150',
         animating ? 'opacity-100' : 'opacity-0'
@@ -186,10 +184,10 @@ const isDirty =
             onClick={handleApply}
             disabled={!isDirty}
             className={clsx(
-              'rounded px-4 py-2 text-sm text-white transition-colors',
+              'rounded px-4 py-2 text-sm text-white',
               isDirty
                 ? 'bg-blue-600 hover:bg-blue-700'
-                : 'bg-gray-400 cursor-not-allowed opacity-60'
+                : 'bg-gray-400 cursor-not-allowed'
             )}
           >
             Apply
