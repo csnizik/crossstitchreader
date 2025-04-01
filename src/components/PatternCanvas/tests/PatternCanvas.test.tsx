@@ -29,6 +29,7 @@ vi.mock('react-konva', () => {
     Layer: ({ children }: any) => <div data-testid="layer">{children}</div>,
     Line: () => <div data-testid="line" />,
     Text: () => <div data-testid="text" />,
+    Group: ({ children }: any) => <div data-testid="group">{children}</div>,
   };
 });
 

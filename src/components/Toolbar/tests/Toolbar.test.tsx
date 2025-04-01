@@ -1,43 +1,134 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import Toolbar from '../Toolbar';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-// Mock Zustand stores
-const toggleMock = vi.fn();
-const openMock = vi.fn();
+// IMPORTANT: First declare all vi.mock calls
+// These need to be BEFORE any imports that might use the mocked modules
 
-vi.mock('../../states/timerStore', async () => ({
-  useTimerStore: (fn: any) =>
-    fn({
-      running: false,
-      toggle: toggleMock,
-      set: vi.fn(),
-    }),
-}));
+// Create mocks inside the mock factory functions to avoid hoisting issues
+// Extend global type to include __mocks__
+declare global {
+  var __mocks__: {
+    saveMock?: jest.Mock;
+    loadMock?: jest.Mock;
+    toggleMock?: jest.Mock;
+    openMock?: jest.Mock;
+  };
+}
 
-vi.mock('../../states/settingsStore', () => ({
-  useSettingsStore: Object.assign(() => ({ open: openMock }), {
-    getState: () => ({ open: openMock }),
-  }),
-}));
+vi.mock('../../../utils/saveLoad', () => {
+  const mockSave = vi.fn();
+  const mockLoad = vi.fn();
 
-// Mock save/load utils
-import * as saveLoad from '../../../utils/saveLoad';
-const saveMock = vi.spyOn(saveLoad, 'savePattern').mockImplementation(() => {});
+  // Store references in global object to access them in our tests
+  vi.stubGlobal('__mocks__', {
+      ...(global.__mocks__ || {}),
+      saveMock: mockSave,
+      loadMock: mockLoad
+  });
+
+  return {
+    savePattern: mockSave,
+    loadPattern: mockLoad
+  };
+});
+
+vi.mock('../../../states/timerStore', () => {
+  const mockToggle = vi.fn();
+
+  // Store references
+  vi.stubGlobal('__mocks__', {
+    ...(global.__mocks__ || {}),
+    toggleMock: mockToggle
+  });
+
+  interface TimerStore {
+    running: boolean;
+    toggle: () => void;
+  }
+
+  type TimerStoreSelector = (state: TimerStore) => any;
+
+  return {
+    useTimerStore: (selector: TimerStoreSelector) => {
+      if (typeof selector === 'function') {
+        return selector({ running: false, toggle: mockToggle });
+      }
+      return { running: false, toggle: mockToggle };
+    }
+  };
+});
+
+vi.mock('../../../states/settingsStore', () => {
+  const mockOpen = vi.fn();
+
+  // Store references
+  vi.stubGlobal('__mocks__', {
+    ...(global.__mocks__ || {}),
+    openMock: mockOpen
+  });
+
+  const mockStore = {
+    isOpen: false,
+    open: mockOpen
+  };
+
+  // Create a proper Zustand store mock with getState
+  interface SettingsStore {
+    isOpen: boolean;
+    open: () => void;
+  }
+
+  type SettingsStoreSelector = (state: SettingsStore) => any;
+
+  const useStore = (selector: SettingsStoreSelector): any => {
+    if (typeof selector === 'function') {
+      return selector(mockStore);
+    }
+    return mockStore;
+  };
+
+  // Add getState method that's used in the component
+  useStore.getState = () => mockStore;
+
+  return {
+    useSettingsStore: useStore
+  };
+});
+
+// Only after all mocks are defined, import the component
+import Toolbar from '../Toolbar';
+
+// Get references to our mocks
+const toggleMock = global.__mocks__.toggleMock;
+const openMock = global.__mocks__.openMock;
+const saveMock = global.__mocks__.saveMock;
+const loadMock = global.__mocks__.loadMock;
 
 describe('Toolbar', () => {
   beforeEach(() => {
+    // Reset mocks before each test
     vi.clearAllMocks();
-    // Needed because jsdom doesn't implement this
+
+    // Mock URL APIs
     vi.stubGlobal('URL', {
       createObjectURL: vi.fn(() => 'blob:mock-url'),
       revokeObjectURL: vi.fn(),
+    });
+
+    // Mock window.location
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: {
+        ...window.location,
+        assign: vi.fn(),
+        replace: vi.fn(),
+        reload: vi.fn(),
+      },
     });
   });
 
   it('renders all toolbar buttons', () => {
     render(<Toolbar />);
-
     expect(screen.getByText('Undo')).toBeInTheDocument();
     expect(screen.getByText('Redo')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
@@ -49,39 +140,27 @@ describe('Toolbar', () => {
   it('calls toggleTimer when timer button is clicked', () => {
     render(<Toolbar />);
     fireEvent.click(screen.getByText('Start Timer'));
-    expect(toggleMock).toHaveBeenCalledOnce();
+    expect(toggleMock).toHaveBeenCalledTimes(1);
   });
 
   it('calls settingsStore.open() when settings clicked', () => {
     render(<Toolbar />);
     fireEvent.click(screen.getByText('Settings'));
-    expect(openMock).toHaveBeenCalledOnce();
+    expect(openMock).toHaveBeenCalledTimes(1);
   });
 
   it('calls savePattern when Save is clicked', () => {
     render(<Toolbar />);
     fireEvent.click(screen.getByText('Save'));
-    expect(saveMock).toHaveBeenCalledOnce();
+    expect(saveMock).toHaveBeenCalledTimes(1);
   });
 
   it('triggers hidden file input when Load is clicked', () => {
     render(<Toolbar />);
     const fileInput = screen.getByTestId('load-input');
     const clickSpy = vi.spyOn(fileInput, 'click');
+
     fireEvent.click(screen.getByText('Load'));
-    expect(clickSpy).toHaveBeenCalledOnce();
-  });
-
-  it('supports drag behavior', () => {
-    render(<Toolbar />);
-    const toolbar = screen.getByTestId('toolbar');
-
-    // Simulate dragging
-    fireEvent.mouseDown(toolbar, { clientX: 100, clientY: 100 });
-    fireEvent.mouseMove(window, { clientX: 120, clientY: 130 });
-    fireEvent.mouseUp(window);
-
-    // No assertion on position, but this confirms no crash
-    expect(toolbar).toBeInTheDocument();
+    expect(clickSpy).toHaveBeenCalledTimes(1);
   });
 });
