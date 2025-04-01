@@ -1,4 +1,4 @@
-import { Text } from 'react-konva';
+import { Group, Rect, Text } from 'react-konva';
 
 type Props = {
   x: number;
@@ -6,21 +6,39 @@ type Props = {
   symbol: string;
   color: string;
   cellSize: number;
+  selected?: boolean;
+  onClick?: () => void;
 };
 
-const SymbolCell = ({ x, y, symbol, color, cellSize }: Props) => {
+const SymbolCell = ({
+  x,
+  y,
+  symbol,
+  color,
+  cellSize,
+  selected = false,
+  onClick,
+}: Props) => {
   return (
-    <Text
-      x={x * cellSize}
-      y={y * cellSize + cellSize / 4}
-      width={cellSize}
-      height={cellSize}
-      text={symbol}
-      fontSize={cellSize * 0.6}
-      align="center"
-      fill={color}
-      onClick={() => console.log(`Clicked (${x}, ${y})`)}
-    />
+    <Group x={x * cellSize} y={y * cellSize} onClick={onClick} onTap={onClick}>
+      {selected && (
+        <Rect
+          width={cellSize}
+          height={cellSize}
+          fill="rgba(0, 120, 255, 0.25)"
+        />
+      )}
+      <Text
+        text={symbol}
+        fontSize={cellSize * 0.6}
+        fill={color}
+        width={cellSize}
+        height={cellSize}
+        align="center"
+        verticalAlign="middle"
+        y={cellSize * 0.25} // vertical nudge to center better
+      />
+    </Group>
   );
 };
 

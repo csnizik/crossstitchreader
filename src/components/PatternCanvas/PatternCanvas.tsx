@@ -3,6 +3,7 @@ import { Pattern } from '../../types/pattern';
 import GridLines from './GridLines';
 import SymbolCell from './SymbolCell';
 import { useZoomPan } from '../../hooks/useZoomPan';
+import { useSelectionStore } from '../../states/selectionStore';
 
 type Props = {
   pattern: Pattern;
@@ -17,6 +18,10 @@ const PatternCanvas = ({ pattern }: Props) => {
   }
 
   const { scale, position, setPosition, handleWheel } = useZoomPan();
+  const { toggle, isSelected } = useSelectionStore();
+
+  // TEMP: hardcoded active tool for now
+  const activeTool = 'select';
 
   const [cols, rows] = pattern.meta.gridSize;
 
@@ -43,16 +48,25 @@ const PatternCanvas = ({ pattern }: Props) => {
         </Layer>
         <Layer>
           {pattern.grid.map((row, y) =>
-            row.map((symbol, x) => (
-              <SymbolCell
-                key={`${x}-${y}`}
-                x={x}
-                y={y}
-                symbol={symbol}
-                color={pattern.symbols[symbol]?.color || '#000'}
-                cellSize={CELL_SIZE}
-              />
-            ))
+            row.map((symbol, x) => {
+              const key = `${x},${y}`;
+              const selected = isSelected(key);
+
+              return (
+                <SymbolCell
+                  key={`symbol-${x}-${y}`}
+                  x={x}
+                  y={y}
+                  symbol={symbol}
+                  color={pattern.symbols[symbol]?.color || '#000'}
+                  cellSize={CELL_SIZE}
+                  selected={selected}
+                  onClick={() => {
+                    if (activeTool === 'select') toggle(key);
+                  }}
+                />
+              );
+            })
           )}
         </Layer>
       </Stage>

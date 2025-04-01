@@ -1,7 +1,9 @@
+// src/components/PatternCanvas/tests/PatternCanvas.test.tsx
+
 import { render, screen } from '@testing-library/react';
-import PatternCanvas from './PatternCanvas';
+import PatternCanvas from '../PatternCanvas';
 import { describe, it, expect, vi } from 'vitest';
-import type { Pattern } from '../../types/pattern';
+import type { Pattern } from '../../../types/pattern';
 
 // Complete mock pattern
 const mockPattern: Pattern = {
@@ -27,12 +29,13 @@ vi.mock('react-konva', () => {
     Layer: ({ children }: any) => <div data-testid="layer">{children}</div>,
     Line: () => <div data-testid="line" />,
     Text: () => <div data-testid="text" />,
+    Group: ({ children }: any) => <div data-testid="group">{children}</div>,
   };
 });
 
 vi.mock('konva', () => ({}));
 
-vi.mock('../../hooks/useZoomPan', () => {
+vi.mock('../../../hooks/useZoomPan', () => {
   return {
     useZoomPan: () => ({
       scale: 1,
@@ -66,14 +69,13 @@ describe('PatternCanvas', () => {
     render(<PatternCanvas pattern={mockPattern} />);
     expect(screen.getByTestId('stage')).toBeInTheDocument();
     expect(screen.getAllByTestId('layer')).toHaveLength(2);
-    expect(screen.getAllByTestId('line').length).toBeGreaterThan(0); // grid lines
-    expect(screen.getAllByTestId('text').length).toBeGreaterThan(0); // symbol text
+    expect(screen.getAllByTestId('line').length).toBeGreaterThan(0);
+    expect(screen.getAllByTestId('text').length).toBeGreaterThan(0);
   });
 
   it('sets up zoom and drag handlers via useZoomPan', () => {
     const { getByTestId } = render(<PatternCanvas pattern={mockPattern} />);
     const stage = getByTestId('stage');
-    expect(stage).toBeInTheDocument(); // Confirm stage is rendered
-    // Zoom/drag functionality is mocked but would be handled by Konva handlers
+    expect(stage).toBeInTheDocument();
   });
 });
