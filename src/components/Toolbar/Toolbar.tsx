@@ -7,9 +7,11 @@ import {
   PlayCircleIcon,
   PauseCircleIcon,
 } from '@heroicons/react/24/solid';
+import { toast } from 'sonner';
 import { useState, useRef } from 'react';
 import { useTimerStore } from '../../states/timerStore';
 import { useSettingsStore } from '../../states/settingsStore';
+import { savePattern, loadPattern } from '../../utils/saveLoad';
 
 const Toolbar = () => {
   const running = useTimerStore((s) => s.running);
@@ -49,6 +51,28 @@ const Toolbar = () => {
     };
   });
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleLoadClick = () => {
+    fileInputRef.current?.click();
+  }
+
+  async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const data = await loadPattern(file);
+      toast.success('Pattern loaded successfully!');
+      console.log(data);
+    } catch (err) {
+      toast.error('Invalid pattern file.');
+      console.error(err);
+    } finally {
+      event.target.value = ''; // allow re-upload of same file
+    }
+  };
+
   return (
     <div
       data-testid="toolbar"
@@ -59,6 +83,15 @@ const Toolbar = () => {
       onMouseDown={handleMouseDown}
       className="absolute z-10 flex flex-col gap-2 rounded-lg bg-white/90 p-3 shadow-lg cursor-move select-none touch-none"
     >
+      <input
+        type="file"
+        accept="application/json"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+        data-testid="load-input"
+      />
+
       <button
         className="flex items-center gap-2 text-sm hover:text-blue-600"
         onClick={() => console.log('Undo')}
@@ -75,14 +108,19 @@ const Toolbar = () => {
       </button>
       <button
         className="flex items-center gap-2 text-sm hover:text-blue-600"
-        onClick={() => console.log('Save')}
+        onClick={() => {
+          const mockPatternState = {
+            message: 'hello from crossstitch-reader!',
+          }; // TODO: replace with real state
+          savePattern(mockPatternState);
+        }}
       >
         <ArrowDownTrayIcon className="size-5" />
         Save
       </button>
       <button
         className="flex items-center gap-2 text-sm hover:text-blue-600"
-        onClick={() => console.log('Load')}
+        onClick={handleLoadClick}
       >
         <FolderOpenIcon className="size-5" />
         Load
