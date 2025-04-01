@@ -18,7 +18,9 @@ export const useSelectionStore = create<SelectionState>((set, get) => ({
     } else {
       newSelected.add(key);
     }
-    console.log('Selected:', [...newSelected]); // 👈 log update
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Selected:', [...newSelected]); // 👈 log update
+    }
     set({ selected: newSelected });
   },
 
