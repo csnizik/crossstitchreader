@@ -36,7 +36,19 @@ vi.mock('../../../states/settingsStore', () => {
   };
 
   // Create a proper Zustand store mock with getState
-  const useStore = (selector) => {
+  interface SettingsStore {
+    isOpen: boolean;
+    close: () => void;
+    mockFabricCount: string;
+    setMockFabricCount: (value: string) => void;
+    thickerGrid: boolean;
+    setThickerGrid: (value: boolean) => void;
+  }
+
+
+  type Selector<T> = (state: SettingsStore) => T;
+
+  const useStore = <T,>(selector?: Selector<T>): T | SettingsStore => {
     if (typeof selector === 'function') {
       return selector(store);
     }
@@ -53,6 +65,15 @@ vi.mock('../../../states/settingsStore', () => {
 
 // Import component AFTER mocks are defined
 import SettingsPanel from '../SettingsPanel';
+
+// Extend the global namespace to include __settingsMocks
+declare global {
+  var __settingsMocks: {
+    close: jest.Mock;
+    setMockFabricCount: jest.Mock;
+    setThickerGrid: jest.Mock;
+  };
+}
 
 // Access mocks from global object
 const { close, setMockFabricCount, setThickerGrid } = global.__settingsMocks;
@@ -73,7 +94,7 @@ describe('SettingsPanel', () => {
       const actual = await vi.importActual('react-dom');
       return {
         ...actual,
-        createPortal: (children) => children,
+        createPortal: (children: React.ReactNode): React.ReactNode => children,
       };
     });
   });
