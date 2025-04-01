@@ -4,7 +4,6 @@ import App from './App';
 
 // Mocks for Konva + child components used in App
 vi.mock('react-konva', () => {
-  const React = require('react');
   return {
     Stage: ({ children }: any) => <div data-testid="stage">{children}</div>,
     Layer: ({ children }: any) => <div data-testid="layer">{children}</div>,
