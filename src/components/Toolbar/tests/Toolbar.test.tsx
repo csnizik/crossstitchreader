@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import Toolbar from './Toolbar';
+import Toolbar from '../Toolbar';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 // Mock Zustand stores
@@ -22,9 +22,9 @@ vi.mock('../../states/settingsStore', () => ({
 }));
 
 // Mock save/load utils
-import * as saveLoad from '../../utils/saveLoad';
+import * as saveLoad from '../../../utils/saveLoad';
 const saveMock = vi.spyOn(saveLoad, 'savePattern').mockImplementation(() => {});
-const loadMock = vi.spyOn(saveLoad, 'loadPattern').mockResolvedValue({});
+// const loadMock = vi.spyOn(saveLoad, 'loadPattern').mockResolvedValue({});
 
 describe('Toolbar', () => {
   beforeEach(() => {

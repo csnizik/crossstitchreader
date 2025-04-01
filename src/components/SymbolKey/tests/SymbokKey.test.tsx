@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import SymbolKey from './SymbolKey';
+import SymbolKey from '../SymbolKey';
 import { describe, it, expect } from 'vitest';
 
 describe('SymbolKey', () => {
