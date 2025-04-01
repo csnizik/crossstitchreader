@@ -40,7 +40,10 @@ describe('toolStore', () => {
     const { setTool } = useToolStore.getState();
 
     // Cycle through multiple tools and verify each change
-    const toolSequence = ['Navigate', 'Zoom', 'Mark', 'Color Filter', 'No Tool'];
+    // Define the Tool type
+        type Tool = 'Navigate' | 'Zoom' | 'Mark' | 'Color Filter' | 'No Tool';
+
+        const toolSequence: Tool[] = ['Navigate', 'Zoom', 'Mark', 'Color Filter', 'No Tool'];
 
     toolSequence.forEach(tool => {
       setTool(tool);
