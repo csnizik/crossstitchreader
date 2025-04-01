@@ -24,7 +24,6 @@ vi.mock('../../states/settingsStore', () => ({
 // Mock save/load utils
 import * as saveLoad from '../../../utils/saveLoad';
 const saveMock = vi.spyOn(saveLoad, 'savePattern').mockImplementation(() => {});
-// const loadMock = vi.spyOn(saveLoad, 'loadPattern').mockResolvedValue({});
 
 describe('Toolbar', () => {
   beforeEach(() => {
