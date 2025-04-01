@@ -6,14 +6,19 @@ import {
   FolderOpenIcon,
   PlayCircleIcon,
   PauseCircleIcon,
+  CursorArrowRaysIcon,
 } from '@heroicons/react/24/solid';
 import { toast } from 'sonner';
 import { useState, useRef } from 'react';
 import { useTimerStore } from '../../states/timerStore';
 import { useSettingsStore } from '../../states/settingsStore';
+import { useToolStore } from '../../states/toolStore';
 import { savePattern, loadPattern } from '../../utils/saveLoad';
 
 const Toolbar = () => {
+  const tool = useToolStore((s) => s.tool);
+  const setTool = useToolStore((s) => s.setTool);
+
   const running = useTimerStore((s) => s.running);
   const toggleTimer = useTimerStore((s) => s.toggle);
 
@@ -91,6 +96,13 @@ const Toolbar = () => {
         className="hidden"
         data-testid="load-input"
       />
+      <button
+        className={`flex items-center gap-2 text-sm ${tool === 'Select' ? 'text-blue-600 font-semibold' : 'hover:text-blue-600'}`}
+        onClick={() => setTool(tool === 'Select' ? 'No Tool' : 'Select')}
+      >
+        <CursorArrowRaysIcon className="size-5" />
+        Select
+      </button>
 
       <button
         className="flex items-center gap-2 text-sm hover:text-blue-600"
