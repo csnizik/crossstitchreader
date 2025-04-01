@@ -22,7 +22,6 @@ const mockPattern: Pattern = {
 
 // Mocks for Konva + custom hooks
 vi.mock('react-konva', () => {
-  const React = require('react');
   return {
     Stage: ({ children }: any) => <div data-testid="stage">{children}</div>,
     Layer: ({ children }: any) => <div data-testid="layer">{children}</div>,
