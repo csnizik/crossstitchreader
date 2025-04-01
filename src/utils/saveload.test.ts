@@ -1,53 +1,80 @@
-// utils/saveLoad.test.ts
-
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { savePattern, loadPattern } from './saveLoad';
 
-const mockClick = vi.fn();
-const mockAppend = vi.fn();
-const mockRemove = vi.fn();
-const mockRevoke = vi.fn();
-
-vi.stubGlobal('document', {
-  createElement: () => ({
-    click: mockClick,
-    set href(v: string) {},
-    set download(v: string) {},
-  }),
-  body: {
-    appendChild: mockAppend,
-    removeChild: mockRemove,
-  },
-});
-
-vi.stubGlobal('URL', {
-  createObjectURL: () => 'blob:url',
-  revokeObjectURL: mockRevoke,
-});
-
 describe('savePattern', () => {
-  it('creates and downloads a JSON file', () => {
-    savePattern({ test: true });
-    expect(mockClick).toHaveBeenCalled();
-    expect(mockAppend).toHaveBeenCalled();
-    expect(mockRemove).toHaveBeenCalled();
-    expect(mockRevoke).toHaveBeenCalled();
+  let createElementSpy: ReturnType<typeof vi.spyOn>;
+  let clickSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeAll(() => {
+    vi.stubGlobal('URL', {
+      createObjectURL: vi.fn(() => 'blob:mock-url'),
+      revokeObjectURL: vi.fn(),
+    });
   });
+
+  beforeEach(() => {
+    createElementSpy = vi.spyOn(document, 'createElement') as unknown as ReturnType<typeof vi.spyOn>;
+    clickSpy = vi.fn();
+
+    createElementSpy.mockImplementation(() => {
+      return {
+        href: '',
+        download: '',
+        click: clickSpy,
+        style: {},
+        setAttribute: vi.fn(),
+      } as unknown as HTMLAnchorElement;
+    });
+  });
+
+  afterEach(() => {
+    createElementSpy.mockRestore();
+  });
+
+ it('creates a downloadable JSON file', () => {
+   const clickSpy = vi.fn();
+   const mockAnchor = {
+     href: '',
+     download: '',
+     click: clickSpy,
+   };
+
+   vi.stubGlobal('URL', {
+     createObjectURL: vi.fn(() => 'blob:mock-url'),
+     revokeObjectURL: vi.fn(),
+   });
+
+   const appendChildSpy = vi.fn();
+   const removeChildSpy = vi.fn();
+
+   vi.spyOn(document, 'createElement').mockImplementation(
+     () => mockAnchor as any
+   );
+   vi.spyOn(document.body, 'appendChild').mockImplementation(appendChildSpy);
+   vi.spyOn(document.body, 'removeChild').mockImplementation(removeChildSpy);
+
+   savePattern({ foo: 'bar' });
+
+   expect(clickSpy).toHaveBeenCalled();
+   expect(appendChildSpy).toHaveBeenCalledWith(mockAnchor);
+   expect(removeChildSpy).toHaveBeenCalledWith(mockAnchor);
+ });
+
 });
 
 describe('loadPattern', () => {
-  it('reads JSON from file and resolves parsed object', async () => {
-    const file = new File([JSON.stringify({ foo: 'bar' })], 'pattern.json', {
-      type: 'application/json',
-    });
+  const createTestFile = (content: string, name = 'test.json') =>
+    new File([content], name, { type: 'application/json' });
+
+  it('resolves with parsed JSON data', async () => {
+    const file = createTestFile(JSON.stringify({ foo: 'bar' }));
     const result = await loadPattern(file);
     expect(result).toEqual({ foo: 'bar' });
   });
 
-  it('rejects if JSON is invalid', async () => {
-    const file = new File(['invalid-json'], 'pattern.json', {
-      type: 'application/json',
-    });
+  it('rejects with error on invalid JSON', async () => {
+    const file = createTestFile('{ invalid json }');
+
     await expect(loadPattern(file)).rejects.toThrow();
   });
 });
