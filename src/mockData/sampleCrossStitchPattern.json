@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Sample Cross Stitch Pattern",
+    "creator": "TabascoSunrise",
+    "gridSize": [12, 12],
+    "fabricCount": 14,
+    "notes": "This is just a sample pattern."
+  },
+  "key": [
+    { "symbol": "A", "id": 699, "strands": 2 },
+    { "symbol": "B", "id": 977, "strands": 2 },
+    { "symbol": "C", "id": 3348, "strands": 2 },
+    { "symbol": "D", "id": 3747, "strands": 2 },
+    { "symbol": "E", "id": 3787, "strands": 2 }
+  ],
+  "grid": [
+    ["", "", "C", "C", "C", "", "", "D", "D", "D", "", ""],
+    ["", "C", "C", "C", "C", "", "", "D", "D", "D", "D", ""],
+    ["C", "C", "C", "C", "C", "", "", "D", "D", "D", "D", "D"],
+    ["C", "C", "C", "C", "C", "", "", "D", "D", "D", "D", "D"],
+    ["C", "C", "C", "C", "C", "", "", "D", "D", "D", "D", "D"],
+    ["", "", "", "", "", "B", "B", "", "", "", "", ""],
+    ["", "", "", "", "", "B", "B", "", "", "", "", ""],
+    ["A", "A", "A", "A", "A", "", "", "E", "E", "E", "E", "E"],
+    ["A", "A", "A", "A", "A", "", "", "E", "E", "E", "E", "E"],
+    ["A", "A", "A", "A", "A", "", "", "E", "E", "E", "E", "E"],
+    ["", "A", "A", "A", "A", "", "", "E", "E", "E", "E", ""],
+    ["", "", "A", "A", "A", "", "", "E", "E", "E", "", ""]
+  ]
+}
