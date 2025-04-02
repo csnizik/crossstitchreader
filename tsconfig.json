@@ -6,6 +6,10 @@
   ],
   "compilerOptions": {
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": "src",
+    "paths": {
+      "@schemas/*": ["types/*"]
+    }
   }
 }

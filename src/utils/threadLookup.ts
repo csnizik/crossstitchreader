@@ -1,22 +1,23 @@
 import { DMCThread, DMC_THREADS } from '../constants/threads';
+import type { PatternThreadEntry } from '@schemas/CrossStitchPattern';
 
 /**
- * Finds a thread by its numeric DMC ID.
- * @param id The numeric string or number of the thread (e.g., "310" or 310)
+ * Find a DMC thread from the master list by its string ID.
+ * @param id The DMC thread ID (e.g. "310", "B5200", "Blanc")
  */
-export function findThreadByID(id: string | number): DMCThread | undefined {
-  const idStr = String(id).trim();
-  return DMC_THREADS.find((thread) => String(thread.id) === idStr);
+export function findThreadByID(id: string): DMCThread | undefined {
+  return DMC_THREADS.find((thread) => thread.id === id);
 }
 
 /**
- * Finds a thread by its symbol from a runtime key array.
- * @param symbol The symbol character used in the pattern grid
- * @param key The key array from the pattern JSON
+ * Find a pattern-specific thread entry by its symbol.
+ * This looks up the thread definition in the pattern's key.
+ * @param symbol The symbol used in the pattern grid
+ * @param key The key array from a CrossStitchPattern
  */
 export function findThreadBySymbol(
   symbol: string,
-  key: { symbol: string; id: number; strands: number }[]
-): { symbol: string; id: number; strands: number } | undefined {
+  key: PatternThreadEntry[]
+): PatternThreadEntry | undefined {
   return key.find((entry) => entry.symbol === symbol);
 }
